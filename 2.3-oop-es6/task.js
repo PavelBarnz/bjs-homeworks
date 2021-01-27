@@ -12,197 +12,152 @@ class PrintEditionItem {
         this.state += this.state / 2;
     };
 
-    set status(num){
+    set state(num){
         if(num >= 100){
-            this.state = 100;
+            this.status = 100;
         } else  if (num <= 0) {
-            this.state = 0;
+            this.status = 0;
         } else {
-            this.state = num;
+            this.status = num;
         };
     };
 
-    get status(){
-        return `Состояние книги = ${this.state}%`;
+    get state(){
+        console.log(`Состояние книги = ${this.status}%`);
+        return this.status;
+    };
+  };
+
+  class Magazine extends PrintEditionItem {
+      constructor(name, releaseDate, pagesCount){
+        super(name, releaseDate, pagesCount);  
+        this.type = "magazine";
+      };
+  };
+
+  class Book extends PrintEditionItem {
+      constructor(author, name, releaseDate, pagesCount) {
+        super(name, releaseDate, pagesCount);
+        this.author = author;
+        this.type = "book"
+      };
+  };
+
+  class NovelBook extends Book {
+    constructor(author, name, releaseDate, pagesCount){
+        super(author, name, releaseDate, pagesCount);
+        this.type = "novel";
+    };
+  };
+
+  class DetectiveBook extends Book {
+    constructor(author, name, releaseDate, pagesCount){
+        super(author, name, releaseDate, pagesCount);
+        this.type = "detective";
+    };
+  };
+
+  class FantasticBook extends Book {
+    constructor(author, name, releaseDate, pagesCount){
+        super(author, name, releaseDate, pagesCount);
+        this.type = "fantastic";
     };
   };
 
 
-class Magazine extends PrintEditionItem {
-    constructor(name, releaseDate, pagesCount){
-        super(name, releaseDate, pagesCount);
-        this.type = "Magazine";
-    };
-};
 
-
-class Book extends PrintEditionItem {
-    constructor(name, releaseDate, pagesCount, author){
-        super(name, releaseDate, pagesCount);
-        this.author = author;
-        this.type = "Book"
-    };
-};
-
-
-class NovelBook extends Book {
-    constructor(name, releaseDate, pagesCount, author){
-        super(name, releaseDate, pagesCount, author);
-        this.type = "Novel"
-    };
-};
-
-class DetectiveBook extends Book {
-    constructor(name, releaseDate, pagesCount, author){
-        super(name, releaseDate, pagesCount, author);
-        this.type = "Detective"
-    };
-};
-
-class FantasticBook extends Book {
-    constructor(name, releaseDate, pagesCount, author){
-        super(name, releaseDate, pagesCount, author);
-        this.type = "Fantastic"
-    };
-};
-
-const book = new FantasticBook("Дом странных детей", 2015, 432, "Риггс Рэнсом");
-
-console.log(`Автор: ${book.author}. Название: ${book.name}. Кол-во страниц: ${book.pagesCount}. Год издания: ${book.releaseDate}. Жанр: ${book.type}`);
-book.status = 53;
-console.log(book.status);
-console.log(`Починим чутка`);
-book.fix();
-console.log(book.status);
-
-
-
-
-////////////////////////////////////////////////////////////
-///////////////ЗАДАНИЕ 2////////////////////////////////////
-
+///////////////////////////////////////////////////////////////
+////////////////////////ЗАДАНИЕ 2//////////////////////////////
 class Library {
-    constructor(name){
+    constructor(name, books){
         this.name = name;
         this.books = [];
     };
 
     addBook(book){
-        if(book.state <= 30){
-            return console.log(`Почините книгу`);
-        } else {
+        if(book.state >= 30){
             this.books.push(book);
+        }else {
+            console.log("Почините книгу и приносите снова!");
         };
     };
 
-    findBookBy(type, value){ 
+    findBookBy(type, value){
         for(let i = 0; i < this.books.length; i++){
             if(value == this.books[i][type]){
-               return console.log(this.books[i]);
+                console.log(this.books[i]);
+                return this.books[i];
             };
         };
-
-        return console.log(null);
+        console.log(null);
+        return null;
     };
 
-    giveBookByName(nameBook){
+    giveBookByName(bookName){
         for(let i = 0; i < this.books.length; i++){
-            if(nameBook == this.books[i].name){
-                let result = this.books.splice(i, 1);
-                return result[0];
+            if(bookName == this.books[i].name){
+                let returnBook = this.books.splice(i, 1);
+                return returnBook[0];
             };
         };
-        return console.log(null);
+        return null;
     };
 };
 
-const permLibrary = new Library("Местная библиотека");
-
-permLibrary.addBook(new FantasticBook("Империя ангелов", 2001, 448, "Бернард Вербер"));
-permLibrary.addBook(new DetectiveBook("Там где лес не растет", 2003, 384, "Мария Семенова"));
-permLibrary.addBook(new NovelBook("Дом странных детей", 1919, 522, "Риггс Рэнсом"));
-permLibrary.addBook(new FantasticBook("Мастер и Маргарита", 1991, 952, "Михаил Булгаков"));
-
-permLibrary.findBookBy("releaseDate", 1919); //Нашли книгу 1919 года выпуска;
-
-//Получили книгу.
-let getBook = permLibrary.giveBookByName("Мастер и Маргарита");
-console.log(getBook);
-console.log(permLibrary.books);
-
-//Испортили книгу
-getBook.status = 64;
-console.log(getBook.status);
-
-//Починили книгу
-getBook.fix();
-console.log(getBook.status);
-
-//Вернули книгу
-permLibrary.addBook(getBook);
-console.log(permLibrary.books);
 
 
 
-////////////////////////////////////////////////////////////
-///////////////ЗАДАНИЕ 3////////////////////////////////////
-
-class StudentLog {
+///////////////////////////////////////////////////////////////
+////////////////////////ЗАДАНИЕ 3//////////////////////////////
+class StudentLog{
     constructor(studentName){
         this.studentName = studentName;
-        this.math = [5, 3, 2];
-        this.algebra = [2, 3, 5];
-        this.geometry = [4, 5, 4];
     };
 
-    get getName(){
-        return console.log(this.studentName);
-    }
+    getName(){
+        return this.studentName;
+    };
 
     addGrade(grade, subject){
+        if(!(this.hasOwnProperty(subject))){
+            this[subject] = [];
+          };
+
         if(grade <= 0 || grade > 5){
             console.log(`Вы пытались поставить оценку ${grade}, по предмету ${subject}. Допускаются только числа от 1 до 5`);
-            return console.log(this[subject].length);
-        };
 
-        this[subject].push(grade);
-        return console.log(`Кол-во оценок по предмету ${subject} равно ${this[subject].length}`);
+            console.log(this[subject].length);
+            return this[subject].length;
+
+        } else {
+            this[subject].push(grade);
+            console.log(this[subject].length);
+            return this[subject].length;
+        };
     };
 
     getAverageBySubject(subject){
-        if(this[subject] === undefined){
-            return console.log(0);
-        } else {
-            let result = this[subject].reduce(function(sum, item){
-                return sum += item;
-            });
-            return console.log(result / this[subject].length);
-        };
+        let average = this[subject].reduce(function(sum, item){
+            return sum + item;
+        });
+        return average / this[subject].length;
     };
 
     getTotalAverage(){
-        let average = this.math.reduce(function(sum, item){
-            return sum += item;
-        });
+        let totalAverage = 0;
+        let counter = 0;
+        let subjects = Object.keys(this);
+        subjects.splice(0, 1);
+        console.log(subjects);
 
-        average += this.algebra.reduce(function(sum, item){
-            return sum += item;
-        });
+        for(let i = 0; i < subjects.length; i++){
+            totalAverage += this[subjects[i]].reduce(function(sum, item){
+                return sum + item;
+            });
 
-        average += this.geometry.reduce(function(sum, item){
-            return sum += item;
-        });
+            counter += this[subjects[i]].length;
+        };
 
-        let counter = this.math.length + this.geometry.length + this.algebra.length;
-
-        return console.log(average / counter);
-    }
+        return totalAverage / counter;
+    };
 };
-
-let a = new StudentLog("Павел");
-
-a.addGrade(1, "math");
-
-a.getAverageBySubject("math");
-a.getTotalAverage();
-console.log(a.studentName)
