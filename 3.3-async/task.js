@@ -1,10 +1,6 @@
-function sayHi(){
-    console.log("Привет!!!");
-};
-
 class AlarmClock {
     constructor() {
-        this.alarmCollection = [{id: 1, callback: sayHi, time: "14:30"}];
+        this.alarmCollection = [];
         this.timerId = null;
     };
 
@@ -81,6 +77,3 @@ class AlarmClock {
     };
 
 }
-
-let bububu = new AlarmClock();
-bububu.start();
