@@ -21,7 +21,12 @@ class AlarmClock {
     };
     
     getCurrentFormattedTime(){
-        return `${new Date().getHours()}:${new Date().getMinutes()}`;
+        let date;
+        if(new Date().getHours() < 10){
+            return date = "0" + `${new Date().getHours()}:${new Date().getMinutes()}`;
+          } else {
+            return date = `${new Date().getHours()}:${new Date().getMinutes()}`;
+          };
     };
 
     removeClock(id){
@@ -44,11 +49,9 @@ class AlarmClock {
         });
     };
 
-
-    /*Мне кажется что в методе start что то не так работает как задумывалось атором ДЗ, просто setInterval будет работать постоянно пока не запустят метод stop или clearAlarms. А это ведь нагрузит браузер. Напишите мне пожалусйта по поводу этого пункта, мне очень важно это понять!*/
     start(){
-        function checkClock(call){
-           let thisTime = `${new Date().getHours()}:${new Date().getMinutes()}`;
+        let checkClock = (call) => {
+           let thisTime = this.getCurrentFormattedTime();
            if(thisTime == call.time){
                call.callback();
            }; 
@@ -56,11 +59,11 @@ class AlarmClock {
         
         if(this.timerId === null){
             this.timerId = setInterval(
-                function(){
+                () => {
                     this.alarmCollection.forEach((item, index) => {
                         checkClock(this.alarmCollection[index]);
                     });
-                }, 60000);
+                }, 30000);
         };
     };
 
@@ -76,4 +79,26 @@ class AlarmClock {
         this.alarmCollection = [];
     };
 
-}
+};
+
+function testCase(){
+    let bububu = new AlarmClock();
+    bububu.addClock(`${new Date().getHours()}:${new Date().getMinutes()}`, () => console.log("Я первый будильник!"), 1);
+
+    bububu.addClock(`${new Date().getHours()}:${new Date().getMinutes() + 1}`, () => {
+        console.log("Я второй будильник!"); 
+        bububu.removeClock(2);
+    }, 2);
+
+    bububu.addClock(`${new Date().getHours()}:${new Date().getMinutes() + 2}`, () => {
+        console.log("Я третий будильник!");
+        bububu.stop();
+        bububu.clearAlarms();
+    }, 3);
+
+    console.log(bububu.alarmCollection);
+
+    bububu.start();
+};
+
+testCase();
